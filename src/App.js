@@ -38,7 +38,25 @@ const initialDictionary = {
   "executives": ["giám đốc điều hành"],
   "renew": ["gia hạn", "làm mới"],
   "identify": ["nhận ra", "nhận dạng"],
-  "wool": ["len"],
+  "resemble": ["tương tự", "giống với"],
+  "wetsuit": ["bộ đồ lặn"],
+  "rubber": ["cao su"],
+  "diver": ["thợ lặn"],
+  "proposed = proposal": ["đề xuất"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
 };
 
 const App = () => {
@@ -48,6 +66,7 @@ const App = () => {
   const [randomWord, setRandomWord] = useState('');
   const [inputValue, setInputValue] = useState('');
   const [correctAnswersCount, setCorrectAnswersCount] = useState(0);
+  const [inCorrectAnswersCount, setIncorrectAnswersCount] = useState(0);
   const [totalAnswersCount, setTotalAnswersCount] = useState(0);
 
   const accuracyRate = totalAnswersCount === 0 ? 0 : (correctAnswersCount / totalAnswersCount) * 100;
@@ -84,6 +103,7 @@ const App = () => {
       </div>, {
         autoClose: 2000,
       });
+      setIncorrectAnswersCount(prevCount => prevCount + 1);
     }
 
     setTotalAnswersCount(prevCount => prevCount + 1);
@@ -127,7 +147,8 @@ const App = () => {
       )}
       <div style={styles.header}>
         <p style={styles.headerTotalText}>Total Words: {totalKeys}</p>
-        <p style={styles.headerCorrectText}>Correct Answers: {correctAnswersCount}</p>
+        <p style={styles.headerCorrectText}>Correct: {correctAnswersCount}</p>
+        <p style={styles.headerIncorrectText}>Incorrect: {inCorrectAnswersCount}</p>
       </div>
       <ToastContainer
         position="top-right"
@@ -168,6 +189,11 @@ const styles = {
     fontSize: '16px',
     fontWeight: 'bold',
     color: "#00ff28",
+  },
+  headerIncorrectText: {
+    fontSize: '16px',
+    fontWeight: 'bold',
+    color: "#ff1800",
   },
   label: {
     fontSize: '42px',
