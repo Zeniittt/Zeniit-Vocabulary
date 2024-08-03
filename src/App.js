@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Modal } from './Modal';
+
 
 const initialDictionary = {
   "annual": ["hằng năm"],
@@ -243,66 +245,66 @@ const initialDictionary = {
   "obvious": ["rõ ràng"],
   "message": ["tin nhắn", "thông điệp"],
   "crucial": ["chủ yếu", "thiết yếu"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
-  "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
+  // "wool": ["len"],
 };
 
 const App = () => {
@@ -314,6 +316,8 @@ const App = () => {
   const [correctAnswersCount, setCorrectAnswersCount] = useState(0);
   const [inCorrectAnswersCount, setIncorrectAnswersCount] = useState(0);
   const [totalAnswersCount, setTotalAnswersCount] = useState(0);
+  const [incorrectWords, setIncorrectWords] = useState({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const accuracyRate = totalAnswersCount === 0 ? 0 : (correctAnswersCount / totalAnswersCount) * 100;
 
@@ -350,6 +354,10 @@ const App = () => {
         autoClose: 2000,
       });
       setIncorrectAnswersCount(prevCount => prevCount + 1);
+      setIncorrectWords(prevWords => ({
+        ...prevWords,
+        [randomWord]: dictionary[randomWord],
+      }));
     }
 
     setTotalAnswersCount(prevCount => prevCount + 1);
@@ -368,6 +376,9 @@ const App = () => {
       checkAnswer();
     }
   };
+
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
 
   return (
     <div style={styles.container}>
@@ -388,13 +399,27 @@ const App = () => {
       ) : (
         <div>
           <p style={styles.label}>Out of words in dictionary!</p>
-          <p style={styles.accuracyRate}>Accuracy Rate: {accuracyRate.toFixed(2)}%</p>
+          <p style={styles.accuracyRate}>
+            Accuracy Rate: {accuracyRate.toFixed(2)}%
+          </p>
         </div>
       )}
       <div style={styles.header}>
-        <p style={styles.headerTotalText}>Total Words: {totalKeys}</p>
-        <p style={styles.headerCorrectText}>Correct: {correctAnswersCount}</p>
-        <p style={styles.headerIncorrectText}>Incorrect: {inCorrectAnswersCount}</p>
+        <div style={styles.textWrapper}>
+          <p style={styles.headerTotalText}>Total Words: {totalKeys}</p>
+          <p style={styles.headerCorrectText}>Correct: {correctAnswersCount}</p>
+          <p style={styles.headerIncorrectText}>
+            Incorrect: {inCorrectAnswersCount}
+          </p>
+        </div>
+        <div style={styles.buttonWrapper}>
+          <button
+            style={styles.buttonIncorrect}
+            onClick={handleOpenModal}
+          >
+            View Incorrect
+          </button>
+        </div>
       </div>
       <ToastContainer
         position="top-right"
@@ -408,6 +433,11 @@ const App = () => {
         pauseOnHover
         theme="colored"
       />
+      <Modal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        incorrectWords={incorrectWords}
+      />
     </div>
   );
 };
@@ -418,25 +448,28 @@ const styles = {
     padding: '20px',
   },
   header: {
+    display: 'flex',
+    marginTop: '20px',
     top: '20px',
     right: '20px',
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
     borderRadius: '5px',
     boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-    paddingLeft: '10px',
-    paddingRight: '10px',
   },
   headerTotalText: {
+    marginLeft: '5px',
     fontSize: '16px',
     fontWeight: 'bold',
     color: "#f6a681",
   },
   headerCorrectText: {
+    marginLeft: '5px',
     fontSize: '16px',
     fontWeight: 'bold',
     color: "#00ff28",
   },
   headerIncorrectText: {
+    marginLeft: '5px',
     fontSize: '16px',
     fontWeight: 'bold',
     color: "#ff1800",
@@ -476,6 +509,27 @@ const styles = {
     fontSize: '24px',
     fontWeight: 'bold',
     color: "#00ff28",
+  }, 
+  textWrapper: {
+    flex: 4,
+    border: '1px solid #ccc',
+    boxSizing: 'border-box',
+  },
+  buttonWrapper: {
+    flex: 1,
+    border: '1px solid #ccc',
+    boxSizing: 'border-box',
+    },
+  buttonIncorrect: {
+    padding: '10px 0',
+    backgroundColor: '#f8efa0',
+    color: 'white',
+    fontSize: '16px',
+    fontWeight: 'bold',
+    cursor: 'pointer',
+    border: 'none',
+    height: '100%',
+    width: '100%',
   },
 };
 
