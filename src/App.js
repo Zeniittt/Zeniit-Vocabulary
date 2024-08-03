@@ -68,10 +68,6 @@ const App = () => {
 
   return (
     <div style={styles.container}>
-      <div style={styles.header}>
-        <p style={styles.headerTotalText}>{totalKeys}</p>
-        <p style={styles.headerCorrectText}>{correctAnswersCount}</p>
-      </div>
       {randomWord ? (
         <>
           <p style={styles.label}>{randomWord}</p>
@@ -89,6 +85,10 @@ const App = () => {
       ) : (
         <p style={styles.label}>Out of words in dictionary!</p>
       )}
+      <div style={styles.header}>
+        <p style={styles.headerTotalText}>Total Words: {totalKeys}</p>
+        <p style={styles.headerCorrectText}>Correct Answers: {correctAnswersCount}</p>
+      </div>
       <ToastContainer
         position="top-right"
         autoClose={2000}
@@ -111,7 +111,6 @@ const styles = {
     fontFamily: 'Arial, sans-serif',
   },
   header: {
-    position: 'absolute',
     top: '20px',
     right: '20px',
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
@@ -132,14 +131,13 @@ const styles = {
   },
   label: {
     fontSize: '42px',
-    marginTop: '120px',
+    marginTop: '70px',
     textAlign: 'center',
     color: "#ff7f42",
     backgroundColor: "#ccc",
     width: '100%',
   },
   input: {
-    marginTop: '20px',
     height: '50px',
     width: '100%',
     borderColor: '#ccc',
