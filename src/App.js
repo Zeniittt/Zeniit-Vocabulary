@@ -10,10 +10,10 @@ const initialDictionary = {
   "occasionally": ["thỉnh thoảng"],
   "vaguely": ["mơ hồ", "hơi đúng"],
   "realistically": ["thực tế"],
-  // "wool": ["len"],
-  // "wool": ["len"],
-  // "wool": ["len"],
-  // "wool": ["len"],
+  "feature (n)": ["đặc điểm", "đặc trưng"],
+  "feature (v)": ["có"],
+  "therefore": ["do đó", "vì vậy"],
+  "seminar = workshop": ["hội thảo"],
   // "wool": ["len"],
   // "wool": ["len"],
   // "wool": ["len"],
@@ -98,10 +98,6 @@ const App = () => {
     }
   };
 
-  const handleCompositionEnd = (event) => {
-    setInputValue(event.target.value);
-  };
-
   return (
     <div style={styles.container}>
       {randomWord ? (
@@ -112,7 +108,7 @@ const App = () => {
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             placeholder="Nhập nghĩa của từ"
-            onCompositionEnd={handleCompositionEnd}
+
             onKeyPress={handleKeyPress} // Xử lý sự kiện nhấn phím
           />
           <button style={styles.button} onClick={checkAnswer}>
