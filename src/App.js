@@ -98,6 +98,10 @@ const App = () => {
     }
   };
 
+  const handleCompositionEnd = (event) => {
+    setInputValue(event.target.value);
+  };
+
   return (
     <div style={styles.container}>
       {randomWord ? (
@@ -108,6 +112,7 @@ const App = () => {
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             placeholder="Nhập nghĩa của từ"
+            onCompositionEnd={handleCompositionEnd}
             onKeyPress={handleKeyPress} // Xử lý sự kiện nhấn phím
           />
           <button style={styles.button} onClick={checkAnswer}>
