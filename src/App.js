@@ -111,7 +111,6 @@ const styles = {
     fontFamily: 'Arial, sans-serif',
   },
   header: {
-    marginTop: '20px',
     position: 'absolute',
     top: '20px',
     right: '20px',
