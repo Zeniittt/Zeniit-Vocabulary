@@ -14,31 +14,31 @@ const initialDictionary = {
   "feature (v)": ["có"],
   "therefore": ["do đó", "vì vậy"],
   "seminar = workshop": ["hội thảo"],
-  // "wool": ["len"],
-  // "wool": ["len"],
-  // "wool": ["len"],
-  // "wool": ["len"],
-  // "wool": ["len"],
-  // "wool": ["len"],
-  // "wool": ["len"],
-  // "wool": ["len"],
-  // "wool": ["len"],
-  // "wool": ["len"],
-  // "wool": ["len"],
-  // "wool": ["len"],
-  // "wool": ["len"],
-  // "wool": ["len"],
-  // "wool": ["len"],
-  // "wool": ["len"],
-  // "wool": ["len"],
-  // "wool": ["len"],
-  // "wool": ["len"],
-  // "wool": ["len"],
-  // "wool": ["len"],
-  // "wool": ["len"],
-  // "wool": ["len"],
-  // "wool": ["len"],
-  // "wool": ["len"],
+  "furthermore": ["hơn nữa", "vả lại"],
+  "as if": ["như thể là"],
+  "such as": ["chẳng hạn như"],
+  "issue": ["ấn phẩm", "vấn đề"],
+  "claim": ["yêu cầu", "tuyên bố", "khẳng định"],
+  "lead to = result to = cause": ["dẫn đến", "gây nên"],
+  "remark": ["nhận xét", "làm chú ý"],
+  "remarkale": ["đáng chú ý", "đáng kể"],
+  "demand": ["yêu cầu", "nhu cầu"],
+  "honestly": ["thực tình"],
+  "doubtfully": ["nghi ngờ", "mập mờ"],
+  "directly": ["trực tiếp"],
+  "coat (n)": ["áo choàng", "áo khoác"],
+  "coating (v)": ["phủ"],
+  "flour": ["bột mì"],
+  "spices": ["gia vị"],
+  "fryer": ["nồi chiên"],
+  "consider": ["cân nhắc", "xem xét"],
+  "grant": ["cấp phát", "ban cho"],
+  "involve": ["liên quan"],
+  "involve in": ["tham gia vào", "liên quan tới"],
+  "executives": ["giám đốc điều hành"],
+  "renew": ["gia hạn", "làm mới"],
+  "identify": ["nhận ra", "nhận dạng"],
+  "wool": ["len"],
 };
 
 const App = () => {
@@ -48,6 +48,9 @@ const App = () => {
   const [randomWord, setRandomWord] = useState('');
   const [inputValue, setInputValue] = useState('');
   const [correctAnswersCount, setCorrectAnswersCount] = useState(0);
+  const [totalAnswersCount, setTotalAnswersCount] = useState(0);
+
+  const accuracyRate = totalAnswersCount === 0 ? 0 : (correctAnswersCount / totalAnswersCount) * 100;
 
   useEffect(() => {
     generateRandomWord();
@@ -64,7 +67,7 @@ const App = () => {
   };
 
   const checkAnswer = () => {
-    const correctValues = dictionary[randomWord].join(', ');
+    const correctValues = dictionary[randomWord].join(' | ');
     const correctAnswers = dictionary[randomWord].map(answer => answer.toLowerCase());
     if (correctAnswers.includes(inputValue.toLowerCase())) {
       toast.success(<div style={{ lineHeight: '1.5' }}>
@@ -82,6 +85,8 @@ const App = () => {
         autoClose: 2000,
       });
     }
+
+    setTotalAnswersCount(prevCount => prevCount + 1);
 
     const updatedDictionary = { ...dictionary };
     delete updatedDictionary[randomWord];
@@ -107,8 +112,7 @@ const App = () => {
             style={styles.input}
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Nhập nghĩa của từ"
-
+            placeholder="Enter the meaning of the word..."
             onKeyPress={handleKeyPress} // Xử lý sự kiện nhấn phím
           />
           <button style={styles.button} onClick={checkAnswer}>
@@ -116,7 +120,10 @@ const App = () => {
           </button>
         </>
       ) : (
-        <p style={styles.label}>Out of words in dictionary!</p>
+        <div>
+          <p style={styles.label}>Out of words in dictionary!</p>
+          <p style={styles.accuracyRate}>Accuracy Rate: {accuracyRate.toFixed(2)}%</p>
+        </div>
       )}
       <div style={styles.header}>
         <p style={styles.headerTotalText}>Total Words: {totalKeys}</p>
@@ -191,6 +198,12 @@ const styles = {
     cursor: 'pointer',
     border: 'none',
     width: '100%',
+  },
+  accuracyRate: {
+    textAlign: 'center',
+    fontSize: '24px',
+    fontWeight: 'bold',
+    color: "#00ff28",
   },
 };
 
